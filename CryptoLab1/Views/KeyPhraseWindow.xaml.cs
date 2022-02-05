@@ -30,15 +30,11 @@ namespace CryptoLab1.Views
             Decrypt
         }
 
-        private enum InputType
-        {
-            Key,
-            Phrase
-        }
-
         public KeyPhraseWindow()
         {
             InitializeComponent();
+
+            keyInput.CommandBindings.Add(new CommandBinding(ApplicationCommands.Paste, HandlePasteKey));
 
             this.key = "";
             this.phrase = "";
@@ -47,8 +43,16 @@ namespace CryptoLab1.Views
 
         private void toggleEncryptButton()
         {
-            if (keyInput.Text.Length <= phraseInput.Text.Length && keyInput.Text.Length > 0) encryptButton.IsEnabled = true;
-            else encryptButton.IsEnabled = false;
+            if (keyInput.Text.Length <= phraseInput.Text.Length && keyInput.Text.Length > 0)
+            {
+                encryptButton.IsEnabled = true;
+                decryptButton.IsEnabled = true;
+            }
+            else
+            {
+                encryptButton.IsEnabled = false;
+                decryptButton.IsEnabled = false;
+            }
         }
 
         private void HandlePreviewKeyInput(object sender, TextCompositionEventArgs e)
@@ -57,6 +61,11 @@ namespace CryptoLab1.Views
             e.Handled = !regex.IsMatch(e.Text);
 
             if(!e.Handled) toggleEncryptButton();
+        }
+
+        private void HandlePasteKey(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (!e.Handled) toggleEncryptButton();
         }
 
         private void HandlePreviewPhraseInput(object sender, TextCompositionEventArgs e)
@@ -96,12 +105,12 @@ namespace CryptoLab1.Views
 
         private void DecryptPhrase(object sender, RoutedEventArgs e)
         {
-            /*try
+            try
             {
-                key = Int32.Parse(keyInput.Text);
+                key = keyInput.Text.ToLower();
                 phrase = phraseInput.Text;
 
-                (resultedPhrase, char[,] arr) = decrypt(phrase, key);
+                resultedPhrase = decrypt(phrase, key);
 
                 resultPhrase.Text = resultedPhrase;
                 resultGrid.Visibility = Visibility.Visible;
@@ -109,7 +118,7 @@ namespace CryptoLab1.Views
             catch (FormatException exception)
             {
                 Console.WriteLine(exception.Message);
-            }*/
+            }
         }
 
 
@@ -128,24 +137,6 @@ namespace CryptoLab1.Views
 
 
             //inner methods
-            int[] createNumbersArray(char[] sortedChars, int keyLength)
-            {
-                int[] numbers = new int[keyLength];
-
-                int lastFoundIndex = -1;
-                for (int i = 0; i < keyLength; i++)
-                {
-                    char currentChar = sortedChars[i];
-
-                    if (i > 0 && sortedChars[i - 1] != currentChar) lastFoundIndex = -1;
-
-                    lastFoundIndex = key.IndexOf(currentChar, lastFoundIndex + 1);
-                    numbers[lastFoundIndex] = i;
-                }
-
-                return numbers;
-            }
-
             char[,] createPhraseMatrix(string phrase, int keyLength)
             {
                 int phraseLength = phrase.Length;
@@ -180,13 +171,105 @@ namespace CryptoLab1.Views
                 {
                     for (int j = 0; j < numbersLength; j++)
                     {
-                        if (matrix[i, dict[j]] == '\0') break;
-                        stringBuilder.Append(matrix[i, dict[j]]);
+                        char c = matrix[i, dict[j]];
+                        if (c != '\0') stringBuilder.Append(c);
                     }
                 }
 
                 return stringBuilder.ToString();
             }
+        }
+
+        private string decrypt(string phrase, string key)
+        {
+            char[] sortedChars = key.ToCharArray();
+            Array.Sort(sortedChars);
+
+            int keyLength = key.Length;
+
+            int[] numbers = createNumbersArray(sortedChars, keyLength);
+
+            char[,] encryptedMatrix = createEncryptedPhraseMatrix(phrase, keyLength);
+            char[,] matrix = createDecryptedPhraseMatrix(phrase, encryptedMatrix);
+
+            return buildDecryptedString(matrix, numbers);
+
+
+            //inner methods
+            char[,] createEncryptedPhraseMatrix(string phrase, int keyLength)
+            {
+                int phraseLength = phrase.Length;
+                int rows = (phraseLength / keyLength) + 1;
+
+                char[,] matrix = new char[rows, keyLength];
+                int phraseIndex = 0;
+                for (int i = 0; i < matrix.GetLength(0); i++)
+                {
+                    for (int j = 0; j < matrix.GetLength(1); j++)
+                    {
+                        if (phraseIndex >= phraseLength) matrix[i, j] = '\0';
+                        else matrix[i, j] = phrase[phraseIndex++];
+                    }
+                }
+
+                return matrix;
+            }
+
+            char[,] createDecryptedPhraseMatrix(string phrase, char[,] encryptedMatrix)
+            {
+                var dict = new Dictionary<int, int>();
+                int numbersLength = numbers.Length;
+                for (int i = 0; i < numbersLength; i++)
+                {
+                    dict.Add(numbers[i], i);
+                }
+
+                int cols = encryptedMatrix.GetLength(1);
+                int phraseLength = phrase.Length;
+                int rows = (phraseLength / cols) + 1;
+
+                char[,] matrix = new char[rows, cols];
+
+                for (int i = 0; i < matrix.GetLength(0); i++)
+                {
+                    for (int j = 0; j < cols; j++)
+                    {
+                        matrix[i, dict[j]] = encryptedMatrix[i, j];
+                    }
+                }
+
+                return matrix;
+            }
+
+            string buildDecryptedString(char[,] matrix, int[] numbers)
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+
+                foreach (char c in matrix)
+                {
+                    if (c != '\0') stringBuilder.Append(c);
+                }
+
+                return stringBuilder.ToString();
+            }
+        }
+
+        private int[] createNumbersArray(char[] sortedChars, int keyLength)
+        {
+            int[] numbers = new int[keyLength];
+
+            int lastFoundIndex = -1;
+            for (int i = 0; i < keyLength; i++)
+            {
+                char currentChar = sortedChars[i];
+
+                if (i > 0 && sortedChars[i - 1] != currentChar) lastFoundIndex = -1;
+
+                lastFoundIndex = key.IndexOf(currentChar, lastFoundIndex + 1);
+                numbers[lastFoundIndex] = i;
+            }
+
+            return numbers;
         }
     }
 }

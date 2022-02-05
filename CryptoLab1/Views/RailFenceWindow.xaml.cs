@@ -40,6 +40,8 @@ namespace CryptoLab1.Views
         {
             InitializeComponent();
 
+            keyInput.CommandBindings.Add(new CommandBinding(ApplicationCommands.Paste, (object sender, ExecutedRoutedEventArgs e) => { }));
+
             this.key = 1;
             this.phrase = "";
             this.resultedPhrase = "";

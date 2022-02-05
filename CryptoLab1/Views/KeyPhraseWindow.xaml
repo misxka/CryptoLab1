@@ -14,7 +14,7 @@
         </Label>
         <TextBox x:Name="phraseInput" HorizontalAlignment="Left" Margin="250,65,0,0" VerticalAlignment="Top" Width="285" FontSize="20" KeyUp="HandleKeyUp" PreviewTextInput="HandlePreviewPhraseInput"/>
         <Button x:Name="encryptButton" Content="Зашифровать" HorizontalAlignment="Left" Margin="576,31,0,0" VerticalAlignment="Top" FontSize="22" Height="39" Width="157" Click="EncryptPhrase" IsEnabled="False"/>
-        <Button x:Name="decryptButton" Content="Расшифровать" HorizontalAlignment="Left" Margin="576,92,0,0" VerticalAlignment="Top" FontSize="22" Height="39" Width="157" Click="DecryptPhrase"/>
+        <Button x:Name="decryptButton" Content="Расшифровать" HorizontalAlignment="Left" Margin="576,92,0,0" VerticalAlignment="Top" FontSize="22" Height="39" Width="157" Click="DecryptPhrase" IsEnabled="False"/>
 
         <Grid x:Name="resultGrid" Visibility="Collapsed" Margin="0,153,0,184">
             <Label Content="Результат:" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" Height="40" Width="107" FontSize="20"/>
