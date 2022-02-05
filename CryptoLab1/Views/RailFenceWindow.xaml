@@ -16,13 +16,15 @@
         <Button x:Name="encryptButton" Content="Зашифровать" HorizontalAlignment="Left" Margin="576,31,0,0" VerticalAlignment="Top" FontSize="22" Height="39" Width="157" Click="EncryptPhrase"/>
         <Button x:Name="decryptButton" Content="Расшифровать" HorizontalAlignment="Left" Margin="576,92,0,0" VerticalAlignment="Top" FontSize="22" Height="39" Width="157" Click="DecryptPhrase"/>
 
-        <Grid x:Name="resultGrid" Visibility="Collapsed" Margin="0,119,0,255">
+        <Grid x:Name="resultGrid" Visibility="Collapsed" Margin="0,130,0,360">
             <Label Content="Результат:" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" Height="40" Width="107" FontSize="20"/>
-            <TextBlock x:Name="resultPhrase" HorizontalAlignment="Left" Foreground="Red" TextDecorations="Underline" Margin="180,0,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Height="30" Width="322" FontSize="22"/>
+            <TextBox x:Name="resultPhrase" Foreground="Red" TextDecorations="Underline" Margin="180,0,0,0" TextWrapping="NoWrap" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Text="" Height="60" Width="589" FontSize="22"/>
         </Grid>
 
-        <Grid x:Name="matrixGrid" Visibility="Collapsed" Margin="0,218,0,0" >
-            <ItemsControl x:Name="matrixView" ItemTemplate="{DynamicResource TableData}" Margin="120, 20, 20, 20"/>
+        <Grid x:Name="matrixGrid" Visibility="Collapsed" Margin="0,293,0,0">
+            <ScrollViewer Padding="0, 0, 30, 0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" CanContentScroll="True">
+                <ItemsControl x:Name="matrixView" ItemTemplate="{DynamicResource TableData}" Margin="60, 20, 20, 20"/>
+            </ScrollViewer>
         </Grid>
     </Grid>
 
@@ -35,7 +37,7 @@
             <ItemsControl ItemsSource="{Binding}" ItemTemplate="{DynamicResource TableCell}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" />
+                        <StackPanel Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
