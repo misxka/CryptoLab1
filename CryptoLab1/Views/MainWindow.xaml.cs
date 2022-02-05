@@ -32,17 +32,27 @@ namespace CryptoLab1
             {
                 case Methods.OpenRailFenceButton:
                     {
-                        initWindow(new RailFenceWindow(), Methods.RailFence);
+                        initWindow(new RailFenceWindow(), Methods.RailFenceMethod);
                         break;
                     }
                 case Methods.OpenKeyPhraseButton:
                     {
-                        initWindow(new KeyPhraseWindow(), Methods.KeyPhrase);
+                        initWindow(new KeyPhraseWindow(), Methods.KeyPhraseMethod);
                         break;
                     }
                 case Methods.OpenTurnableArrayButton:
                     {
-                        initWindow(new TurnableArrayWindow(), Methods.TurnableArray);
+                        initWindow(new TurnableArrayWindow(), Methods.TurnableArrayMethod);
+                        break;
+                    }
+                case Methods.OpenCaesarButton:
+                    {
+                        initWindow(new CaesarWindow(), Methods.CaesarMethod);
+                        break;
+                    }
+                case Methods.OpenSubstitutionMultiplyButton:
+                    {
+                        initWindow(new SubstitutionMultiplyWindow(), Methods.SubstitutionMultiplyMethod);
                         break;
                     }
             }

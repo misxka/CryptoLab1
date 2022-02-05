@@ -7,14 +7,20 @@
         mc:Ignorable="d"
         Title="Главное окно" Height="600" Width="1000">
     <Grid>
-        <Button x:Name="OpenRailFenceButton" FontSize="18" Width="350" Height="100" Click="HandleClick" Margin="225,10,225,325" >
+        <Button x:Name="OpenRailFenceButton" FontSize="18" Width="350" Height="100" Click="HandleClick" Margin="50,67,600,418" >
             <TextBlock TextAlignment="Center" Height="50" Width="340" FontSize="18">Метод<LineBreak/>"Железнодорожная изгородь"</TextBlock>
         </Button>
-        <Button x:Name="OpenKeyPhraseButton" FontSize="18" Width="350" Height="100" Click="HandleClick" Margin="225,160,225,175" >
+        <Button x:Name="OpenKeyPhraseButton" FontSize="18" Width="350" Height="100" Click="HandleClick" Margin="50,224,600,261" >
             <TextBlock TextAlignment="Center" Height="50" Width="340" FontSize="18">Метод<LineBreak/>"Ключевая фраза"</TextBlock>
         </Button>
         <Button x:Name="OpenTurnableArrayButton" FontSize="18" Width="350" Height="100" Click="HandleClick" Margin="225,300,225,10" >
             <TextBlock TextAlignment="Center" Height="50" Width="340" FontSize="18">Метод<LineBreak/>"Поворачивающаяся решётка"</TextBlock>
+        </Button>
+        <Button x:Name="OpenCaesarButton" FontSize="18" Width="350" Height="100" Click="HandleClick" Margin="600,67,50,418" >
+            <TextBlock TextAlignment="Center" Height="50" Width="340" FontSize="18"><Run Text="Метод"/><LineBreak/><Run Text="Цезаря"/></TextBlock>
+        </Button>
+        <Button x:Name="OpenSubstitutionMultiplyButton" FontSize="18" Width="350" Height="100" Click="HandleClick" Margin="600,224,50,261" >
+            <TextBlock TextAlignment="Center" Height="50" Width="340" FontSize="18"><Run Text="Метод"/><LineBreak/><Run Text="подстановки с умножением"/></TextBlock>
         </Button>
     </Grid>
 </Window>

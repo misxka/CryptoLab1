@@ -7,6 +7,24 @@
         mc:Ignorable="d"
         Title="KeyPhraseWindow" Height="450" Width="800">
     <Grid>
-        
+        <Label Content="Введите ключ:" HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top" Height="40" Width="160" FontSize="20"/>
+        <TextBox x:Name="keyInput" MaxLength="1" HorizontalAlignment="Left" Margin="25,65,0,0" VerticalAlignment="Top" Width="133" FontSize="20" PreviewKeyDown="HandleKeyDown" PreviewTextInput="HandlePreviewTextInput"/>
+        <Label HorizontalAlignment="Left" Margin="246,20,0,0" VerticalAlignment="Top" Height="40" Width="453" FontSize="20">
+            Введите фразу:
+        </Label>
+        <TextBox x:Name="phraseInput" HorizontalAlignment="Left" Margin="250,65,0,0" VerticalAlignment="Top" Width="285" FontSize="20"/>
+        <Button x:Name="encryptButton" Content="Зашифровать" HorizontalAlignment="Left" Margin="576,31,0,0" VerticalAlignment="Top" FontSize="22" Height="39" Width="157" Click="EncryptPhrase"/>
+        <Button x:Name="decryptButton" Content="Расшифровать" HorizontalAlignment="Left" Margin="576,92,0,0" VerticalAlignment="Top" FontSize="22" Height="39" Width="157" Click="DecryptPhrase"/>
+
+        <Grid x:Name="resultGrid" Visibility="Collapsed" Margin="0,130,0,360">
+            <Label Content="Результат:" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" Height="40" Width="107" FontSize="20"/>
+            <TextBox x:Name="resultPhrase" Foreground="Red" TextDecorations="Underline" Margin="180,0,0,0" TextWrapping="NoWrap" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Text="" Height="60" Width="589" FontSize="22"/>
+        </Grid>
     </Grid>
+
+    <Window.Resources>
+        <DataTemplate x:Key="TableCell">
+            <TextBlock Text="{Binding}" Height="30" Width="30" FontSize="18"/>
+        </DataTemplate>
+    </Window.Resources>
 </Window>

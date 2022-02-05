@@ -8,11 +8,16 @@ namespace CryptoLab1.Models
 {
     public static class Methods
     {
-        public const string RailFence = "Железнодорожная изгородь";
-        public const string KeyPhrase = "Ключевая фраза";
-        public const string TurnableArray = "Поворачивающаяся решётка";
+        public const string RailFenceMethod = "Железнодорожная изгородь";
+        public const string KeyPhraseMethod = "Ключевая фраза";
+        public const string TurnableArrayMethod = "Поворачивающаяся решётка";
+        public const string CaesarMethod = "Метод Цезаря";
+        public const string SubstitutionMultiplyMethod = "Метод подстановки с умножением";
+
         public const string OpenRailFenceButton = "OpenRailFenceButton";
         public const string OpenKeyPhraseButton = "OpenKeyPhraseButton";
         public const string OpenTurnableArrayButton = "OpenTurnableArrayButton";
+        public const string OpenCaesarButton = "OpenCaesarButton";
+        public const string OpenSubstitutionMultiplyButton = "OpenSubstitutionMultiplyButton";
     }
 }

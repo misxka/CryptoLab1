@@ -21,8 +21,8 @@ namespace CryptoLab1.Views
     public partial class RailFenceWindow : Window
     {
         private int key;
-        private String phrase;
-        private String resultedPhrase;
+        private string phrase;
+        private string resultedPhrase;
 
         private enum Direction
         {

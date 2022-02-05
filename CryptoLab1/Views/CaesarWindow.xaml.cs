@@ -16,9 +16,9 @@ using System.Windows.Shapes;
 namespace CryptoLab1.Views
 {
     /// <summary>
-    /// Логика взаимодействия для TurnableArrayWindow.xaml
+    /// Логика взаимодействия для CaesarWindow.xaml
     /// </summary>
-    public partial class TurnableArrayWindow : Window
+    public partial class CaesarWindow : Window
     {
         private int key;
         private string phrase;
@@ -30,7 +30,7 @@ namespace CryptoLab1.Views
             Decrypt
         }
 
-        public TurnableArrayWindow()
+        public CaesarWindow()
         {
             InitializeComponent();
 
