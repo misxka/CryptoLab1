@@ -30,6 +30,12 @@ namespace CryptoLab1.Views
             Decrypt
         }
 
+        private enum InputType
+        {
+            Key,
+            Phrase
+        }
+
         public KeyPhraseWindow()
         {
             InitializeComponent();
@@ -39,15 +45,35 @@ namespace CryptoLab1.Views
             this.resultedPhrase = "";
         }
 
-        private void HandlePreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void toggleEncryptButton()
+        {
+            if (keyInput.Text.Length <= phraseInput.Text.Length && keyInput.Text.Length > 0) encryptButton.IsEnabled = true;
+            else encryptButton.IsEnabled = false;
+        }
+
+        private void HandlePreviewKeyInput(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex(@"^[а-яА-Я]$");
             e.Handled = !regex.IsMatch(e.Text);
+
+            if(!e.Handled) toggleEncryptButton();
         }
 
-        private void HandleKeyDown(object sender, KeyEventArgs e)
+        private void HandlePreviewPhraseInput(object sender, TextCompositionEventArgs e)
+        {
+            toggleEncryptButton();
+        }
+
+        private void HandlePreviewKeyDownKey(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Space) e.Handled = true;
+
+            if (!e.Handled) toggleEncryptButton();
+        }
+
+        private void HandleKeyUp(object sender, KeyEventArgs e)
+        {
+            toggleEncryptButton();
         }
 
         private void EncryptPhrase(object sender, RoutedEventArgs e)
