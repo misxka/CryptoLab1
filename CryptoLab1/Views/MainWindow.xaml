@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CryptoLab1"
         mc:Ignorable="d"
-        Title="Главное окно" Height="600" Width="1000">
+        Title="Главное окно" Height="700" Width="1060">
     <Grid>
         <Button x:Name="OpenRailFenceButton" FontSize="18" Width="350" Height="100" Click="HandleClick" Margin="50,67,600,418" >
-            <TextBlock TextAlignment="Center" Height="50" Width="340" FontSize="18">Метод<LineBreak/>"Железнодорожная изгородь"</TextBlock>
+            <TextBlock TextAlignment="Center" Height="50" Width="287" FontSize="18">Метод<LineBreak/>"Железнодорожная изгородь"</TextBlock>
         </Button>
         <Button x:Name="OpenKeyPhraseButton" FontSize="18" Width="350" Height="100" Click="HandleClick" Margin="50,224,600,261" >
-            <TextBlock TextAlignment="Center" Height="50" Width="340" FontSize="18">Метод<LineBreak/>"Ключевая фраза"</TextBlock>
+            <TextBlock TextAlignment="Center" Height="50" Width="330" FontSize="18">Метод<LineBreak/>"Ключевая фраза"</TextBlock>
         </Button>
         <Button x:Name="OpenTurnableArrayButton" FontSize="18" Width="350" Height="100" Click="HandleClick" Margin="225,300,225,10" >
             <TextBlock TextAlignment="Center" Height="50" Width="340" FontSize="18">Метод<LineBreak/>"Поворачивающаяся решётка"</TextBlock>
