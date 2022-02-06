@@ -13,7 +13,7 @@
         <Button x:Name="OpenKeyPhraseButton" FontSize="18" Width="350" Height="100" Click="HandleClick" Margin="50,224,600,261" >
             <TextBlock TextAlignment="Center" Height="50" Width="330" FontSize="18">Метод<LineBreak/>"Ключевая фраза"</TextBlock>
         </Button>
-        <Button x:Name="OpenTurnableArrayButton" FontSize="18" Width="350" Height="100" Click="HandleClick" Margin="225,300,225,10" >
+        <Button x:Name="OpenTurnableGrilleButton" FontSize="18" Width="350" Height="100" Click="HandleClick" Margin="225,300,225,10" >
             <TextBlock TextAlignment="Center" Height="50" Width="340" FontSize="18">Метод<LineBreak/>"Поворачивающаяся решётка"</TextBlock>
         </Button>
         <Button x:Name="OpenCaesarButton" FontSize="18" Width="350" Height="100" Click="HandleClick" Margin="600,67,50,418" >

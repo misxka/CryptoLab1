@@ -40,9 +40,9 @@ namespace CryptoLab1
                         initWindow(new KeyPhraseWindow(), Methods.KeyPhraseMethod);
                         break;
                     }
-                case Methods.OpenTurnableArrayButton:
+                case Methods.OpenTurnableGrilleButton:
                     {
-                        initWindow(new TurnableArrayWindow(), Methods.TurnableArrayMethod);
+                        initWindow(new TurnableGrilleWindow(), Methods.TurnableGrilleMethod);
                         break;
                     }
                 case Methods.OpenCaesarButton:
