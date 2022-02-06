@@ -104,7 +104,7 @@ namespace CryptoLab1.Views
             key = keyInput.Text.ToLower();
             phrase = phraseInput.Text;
 
-            //(resultedPhrase, char[,] arr) = decrypt(phrase, key);
+            resultedPhrase = Decrypt(phrase, key);
 
             resultPhrase.Text = resultedPhrase;
             resultGrid.Visibility = Visibility.Visible;
@@ -124,6 +124,17 @@ namespace CryptoLab1.Views
             return getEncryptedString(phraseMatrix);
         }
 
+        private string Decrypt(string phrase, string key)
+        {
+            int size = (int)Math.Sqrt(key.Length);
+
+            char[,] keyMatrix = createKeyMatrix(new char[size, size], size);
+
+            char[,] encryptedPhraseMatrix = createEncryptedPhraseMatrix(new char[size, size], size, phrase);
+
+            return getDecryptedString(encryptedPhraseMatrix, keyMatrix);
+        }
+
         private char[,] fillMatrixWithNull(char[,] arr)
         {
             for (int i = 0; i < arr.GetLength(0); i++)
@@ -134,6 +145,20 @@ namespace CryptoLab1.Views
                 }
             }
             return arr;
+        }
+
+        private char[,] createEncryptedPhraseMatrix(char[,] matrix, int size, string phrase)
+        {
+            int phraseIndex = 0;
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    matrix[i, j] = phrase[phraseIndex++];
+                }
+            }
+
+            return matrix;
         }
 
         private char[,] createKeyMatrix(char[,] keyMatrix, int size)
@@ -183,6 +208,29 @@ namespace CryptoLab1.Views
             return stringBuilder.ToString();
         }
 
+        private string getDecryptedString(char[,] encryptedPhraseMatrix, char[,] keyMatrix)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            int size = encryptedPhraseMatrix.GetLength(0);
+            for (int k = 0; k < size; k++)
+            {
+                for (int i = 0; i < size; i++)
+                {
+                    for (int j = 0; j < size; j++)
+                    {
+                        if (keyMatrix[i, j] == '.')
+                        {
+                            stringBuilder.Append(encryptedPhraseMatrix[i, j]);
+                        }
+                    }
+                }
+                encryptedPhraseMatrix = rotateMatrix(encryptedPhraseMatrix);
+            }
+
+            return stringBuilder.ToString();
+        }
+
 
         private bool IsCorrectSlotsAmount(string key)
         {
@@ -214,11 +262,6 @@ namespace CryptoLab1.Views
 
             return true;
         }
-
-        //private (string, char[,]) decrypt(string phrase, string key)
-        //{
-
-        //}
 
         private char[,] rotateMatrix(char[,] matrix)
         {
