@@ -7,16 +7,23 @@
         mc:Ignorable="d"
         Title="SubstitutionMultiplyWindow" Height="450" Width="800">
     <Grid>
-        <Label Content="Введите ключ:" HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top" Height="40" Width="160" FontSize="20"/>
-        <TextBox x:Name="keyInput" MaxLength="1" HorizontalAlignment="Left" Margin="25,65,0,0" VerticalAlignment="Top" Width="133" FontSize="20" PreviewKeyDown="HandleKeyDown" PreviewTextInput="HandlePreviewTextInput"/>
+        <Label Content="Введите ключ шифратора:" HorizontalAlignment="Left" Margin="10,112,0,0" VerticalAlignment="Top" Height="40" Width="252" FontSize="20"/>
+        <TextBox MaxLength="3" x:Name="encryptKeyInput" HorizontalAlignment="Left" Margin="16,157,0,0" VerticalAlignment="Top" Width="246" FontSize="20" PreviewKeyDown="HandleKeyDown" KeyUp="HandleKeyUp" PreviewTextInput="HandlePreviewTextInput"/>
         <Label HorizontalAlignment="Left" Margin="246,20,0,0" VerticalAlignment="Top" Height="40" Width="453" FontSize="20">
             Введите фразу:
         </Label>
-        <TextBox x:Name="phraseInput" HorizontalAlignment="Left" Margin="250,65,0,0" VerticalAlignment="Top" Width="285" FontSize="20"/>
-        <Button x:Name="encryptButton" Content="Зашифровать" HorizontalAlignment="Left" Margin="576,31,0,0" VerticalAlignment="Top" FontSize="22" Height="39" Width="157" Click="EncryptPhrase"/>
-        <Button x:Name="decryptButton" Content="Расшифровать" HorizontalAlignment="Left" Margin="576,92,0,0" VerticalAlignment="Top" FontSize="22" Height="39" Width="157" Click="DecryptPhrase"/>
+        <TextBox x:Name="phraseInput" HorizontalAlignment="Left" Margin="250,65,0,0" VerticalAlignment="Top" Width="285" FontSize="20" KeyUp="HandleKeyUp" PreviewTextInput="HandlePreviewPhraseInput"/>
+        <Button x:Name="encryptButton" IsEnabled="False" Content="Зашифровать" HorizontalAlignment="Left" Margin="599,31,0,0" VerticalAlignment="Top" FontSize="22" Height="39" Width="157" Click="EncryptPhrase"/>
+        <Button x:Name="decryptButton" IsEnabled="False" Content="Расшифровать" HorizontalAlignment="Left" Margin="599,93,0,0" VerticalAlignment="Top" FontSize="22" Height="39" Width="157" Click="DecryptPhrase"/>
+        <ComboBox FontSize="20" x:Name="alphabetSelection" SelectedIndex="0" HorizontalAlignment="Left" Margin="42,62,0,0" VerticalAlignment="Top" Width="156" Height="35" SelectionChanged="alphabetSelection_SelectionChanged" RenderTransformOrigin="0.737,-0.505">
+            <TextBlock>Русский</TextBlock>
+            <TextBlock>Английский</TextBlock>
+        </ComboBox>
+        <Label Content="Выберите алфавит:" HorizontalAlignment="Left" Margin="25,20,0,0" VerticalAlignment="Top" Height="40" Width="190" FontSize="20"/>
+        <Label Content="Введите ключ дешифратора:" HorizontalAlignment="Left" Margin="296,112,0,0" VerticalAlignment="Top" Height="40" Width="274" FontSize="20"/>
+        <TextBox MaxLength="3" x:Name="decryptKeyInput" HorizontalAlignment="Left" Margin="303,157,0,0" VerticalAlignment="Top" Width="266" FontSize="20" PreviewKeyDown="HandleKeyDown" KeyUp="HandleKeyUp" PreviewTextInput="HandlePreviewTextInput"/>
 
-        <Grid x:Name="resultGrid" Visibility="Collapsed" Margin="0,130,0,360">
+        <Grid x:Name="resultGrid" Visibility="Collapsed" Margin="0,218,0,94">
             <Label Content="Результат:" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" Height="40" Width="107" FontSize="20"/>
             <TextBox x:Name="resultPhrase" Foreground="Red" TextDecorations="Underline" Margin="180,0,0,0" TextWrapping="NoWrap" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Text="" Height="60" Width="589" FontSize="22"/>
         </Grid>

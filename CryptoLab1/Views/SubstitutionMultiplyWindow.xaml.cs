@@ -20,9 +20,12 @@ namespace CryptoLab1.Views
     /// </summary>
     public partial class SubstitutionMultiplyWindow : Window
     {
-        private int key;
+        private int encryptKey;
+        private int decryptKey;
         private string phrase;
         private string resultedPhrase;
+        private Alphabet alphabet;
+        private int modulus;
 
         private enum Option
         {
@@ -30,18 +33,133 @@ namespace CryptoLab1.Views
             Decrypt
         }
 
+        private enum Alphabet
+        {
+            Russian,
+            English
+        }
+
         public SubstitutionMultiplyWindow()
         {
             InitializeComponent();
 
-            this.key = 1;
+            encryptKeyInput.CommandBindings.Add(new CommandBinding(ApplicationCommands.Paste, HandlePasteKey));
+            decryptKeyInput.CommandBindings.Add(new CommandBinding(ApplicationCommands.Paste, HandlePasteKey));
+
+            this.encryptKey = 1;
+            this.decryptKey = 1;
             this.phrase = "";
             this.resultedPhrase = "";
+            this.alphabet = Alphabet.Russian;
+            this.modulus = 33;
+        }
+
+
+        private void ToggleEncryptButton()
+        {
+            ToggleHandlersSeparate(encryptButton, encryptKeyInput);
+        }
+
+        private void ToggleDecryptButton()
+        {
+            ToggleHandlersSeparate(decryptButton, decryptKeyInput);
+        }
+
+        private bool AreKeysValid()
+        {
+            try
+            {
+                int key1 = Int32.Parse(encryptKeyInput.Text);
+                int key2 = Int32.Parse(decryptKeyInput.Text);
+
+                if (encryptKeyInput.Text.Length > 0 && decryptKeyInput.Text.Length > 0 && !checkKeys(key1, key2))
+                {
+                    encryptButton.IsEnabled = false;
+                    decryptButton.IsEnabled = false;
+                    return false;
+                }
+
+                return true;
+            } catch (FormatException e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+
+            bool checkKeys(int key1, int key2)
+            {
+                return (key1 * key2) % modulus == 1;
+            }
+        }
+
+        private void ToggleHandlersSeparate(Button btn, TextBox keyInput)
+        {
+            if(keyInput.Text.Equals("0")) {
+                btn.IsEnabled = false;
+                return;
+            }
+
+            if (keyInput.Text.Length > 0 && phraseInput.Text.Length > 0)
+            {
+                btn.IsEnabled = true;
+            }
+            else
+            {
+                btn.IsEnabled = false;
+                return;
+            }
+
+            if (!AreRelativelyPrime(Int32.Parse(keyInput.Text), modulus))
+            {
+                btn.IsEnabled = false;
+                return;
+            }
+
+            if (!AreKeysValid())
+            {
+                return;
+            }
+
+            bool AreRelativelyPrime(int a, int b)
+            {
+                return EuclidGcd(a, b) == 1;
+            }
+
+            int EuclidGcd(int a, int b)
+            {
+                int t;
+                while (b != 0)
+                {
+                    t = a;
+                    a = b;
+                    b = t % b;
+                }
+                return a;
+            }
+        }
+
+        private void HandleKeyUp(object sender, KeyEventArgs e)
+        {
+            ToggleEncryptButton();
+            ToggleDecryptButton();
+
+            AreKeysValid();
+        }
+
+        private void HandlePasteKey(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (!e.Handled)
+            {
+                ToggleEncryptButton();
+                ToggleDecryptButton();
+
+                AreKeysValid();
+            }
         }
 
         private void HandlePreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex(@"^[1-9]$");
+            Regex regex = new Regex(@"^([0-9]|[1-9][0-9])$");
             e.Handled = !regex.IsMatch(e.Text);
         }
 
@@ -50,14 +168,33 @@ namespace CryptoLab1.Views
             if (e.Key == Key.Space) e.Handled = true;
         }
 
+        private void alphabetSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int selIndex = ((ComboBox)sender).SelectedIndex;
+            alphabet = selIndex == 0 ? Alphabet.Russian : Alphabet.English;
+            modulus = selIndex == 0 ? 33 : 26;
+        }
+
+        private void HandlePreviewPhraseInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex;
+
+            if (alphabet == Alphabet.Russian) regex = new Regex(@"^[а-яА-Я]$");
+            else regex = new Regex(@"^[a-zA-Z]$");
+
+            e.Handled = !regex.IsMatch(e.Text);
+        }
+
+
+        //encrypt
         private void EncryptPhrase(object sender, RoutedEventArgs e)
         {
             try
             {
-                key = Int32.Parse(keyInput.Text);
+                encryptKey = Int32.Parse(encryptKeyInput.Text);
                 phrase = phraseInput.Text;
 
-                (resultedPhrase, char[,] arr) = encrypt(phrase, key);
+                resultedPhrase = encrypt(phrase, encryptKey);
 
                 resultPhrase.Text = resultedPhrase;
                 resultGrid.Visibility = Visibility.Visible;
@@ -68,14 +205,41 @@ namespace CryptoLab1.Views
             }
         }
 
+        private string encrypt(string phrase, int key)
+        {
+            return getEncryptedString(phrase, key);
+        }
+
+        private string getEncryptedString(string phrase, int key)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            foreach (char c in phrase)
+            {
+                stringBuilder.Append(encryptCharacter(c, key));
+            }
+
+            return stringBuilder.ToString();
+        }
+
+        private char encryptCharacter(char c, int key)
+        {
+            char indentChar;
+            if (alphabet == Alphabet.Russian) indentChar = char.IsUpper(c) ? 'А' : 'а';
+            else indentChar = char.IsUpper(c) ? 'A' : 'a';
+
+            return (char)(((c * key - indentChar) % modulus) + indentChar);
+        }
+
+        //decrypt
         private void DecryptPhrase(object sender, RoutedEventArgs e)
         {
             try
             {
-                key = Int32.Parse(keyInput.Text);
+                decryptKey = Int32.Parse(decryptKeyInput.Text);
                 phrase = phraseInput.Text;
 
-                (resultedPhrase, char[,] arr) = decrypt(phrase, key);
+                resultedPhrase = encrypt(phrase, decryptKey);
 
                 resultPhrase.Text = resultedPhrase;
                 resultGrid.Visibility = Visibility.Visible;
@@ -84,72 +248,6 @@ namespace CryptoLab1.Views
             {
                 Console.WriteLine(exception.Message);
             }
-        }
-
-        private (string, char[,]) encrypt(string phrase, int key)
-        {
-            char[,] arr = fillMatrix(phrase, key, Option.Encrypt);
-
-            return (getEncryptedString(arr), arr);
-        }
-
-        private (string, char[,]) decrypt(string phrase, int key)
-        {
-            char[,] arr = fillMatrix(phrase, key, Option.Decrypt);
-
-            return (getDecryptedString(arr), arr);
-        }
-
-        private char[,] fillMatrixWithNull(char[,] arr)
-        {
-            for (int i = 0; i < arr.GetLength(0); i++)
-            {
-                for (int j = 0; j < arr.GetLength(1); j++)
-                {
-                    arr[i, j] = '\0';
-                }
-            }
-            return arr;
-        }
-
-        private char[,] fillMatrix(string phrase, int key, Option option)
-        {
-            char[,] arr = fillMatrixWithNull(new char[key, phrase.Length]);
-
-            if (option == Option.Encrypt) fillEncMatrix(phrase, key);
-            else fillDecryptMatrix(phrase, key);
-
-
-            void fillEncMatrix(string phrase, int key)
-            {
-
-            }
-
-            void fillDecryptMatrix(string phrase, int key)
-            {
-
-            }
-
-            return arr;
-        }
-
-        private string getEncryptedString(char[,] arr)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-
-            foreach (char c in arr)
-            {
-                if (c != '\0') stringBuilder.Append(c);
-            }
-
-            return stringBuilder.ToString();
-        }
-
-        private string getDecryptedString(char[,] arr)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-
-            return stringBuilder.ToString();
         }
     }
 }
